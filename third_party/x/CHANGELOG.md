@@ -2,6 +2,11 @@
 
 All notable changes to this plugin will be documented here.
 
+## 2.5.2 — Read unencrypted X Chat messages
+
+- Threads can include older unencrypted messages; the helper's `decrypt` now returns them like any other message. Existing helper clones are pulled so they pick this up. Replies are still always encrypted.
+- Dropped the encrypted-only framing, the hint that empty `data` can mean an empty thread, and the advice to keep `max_results` small. Agents must not claim they checked all chats unless they read every thread to the end.
+
 ## 2.5.1 — X Chat in the always-read MCP guide
 
 - Folded the X Chat companion skill into the X MCP guide so GrokBot loads Chat / inbox / DMs without a second skill. Clone `xchat_lite.py` from https://github.com/xdevplatform/xchat-grokbot-helper yourself — do not wait for the user to name the helper.
