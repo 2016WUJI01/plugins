@@ -2,6 +2,10 @@
 
 All notable changes to this plugin will be documented here.
 
+## 2.6.0 — Remember the X Chat key
+
+- Every Chat PIN request also asks whether to remember the X Chat key on this computer so the owner won't need the PIN next time, noting that anyone with access to the computer could then read their X Chats. Default is no. When a saved key works, the agent uses it without asking for the PIN and mentions that `forget` removes it.
+
 ## 2.5.2 — Read unencrypted X Chat messages
 
 - Threads can include older unencrypted messages. The helper's `decrypt` accepts every event and marks each message `verified`, `unencrypted`, or `unverified`. An unverified message still includes its text when it could be decrypted; only a message that cannot be decrypted comes back without text. Existing helper clones are pulled so they pick this up. Replies are still always encrypted.
