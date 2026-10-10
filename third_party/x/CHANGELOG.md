@@ -4,8 +4,9 @@ All notable changes to this plugin will be documented here.
 
 ## 2.5.2 — Read unencrypted X Chat messages
 
-- Threads can include older unencrypted messages; the helper's `decrypt` now returns them like any other message. Existing helper clones are pulled so they pick this up. Replies are still always encrypted.
-- Dropped the encrypted-only framing, the hint that empty `data` can mean an empty thread, and the advice to keep `max_results` small. Agents must not claim they checked all chats unless they read every thread to the end.
+- Threads can include older unencrypted messages. The helper's `decrypt` returns them marked `unencrypted`, still verifies every encrypted event strictly, and marks encrypted messages it can't verify `unverified`. Agents tell the owner about both. Existing helper clones are pulled so they pick this up. Replies are still always encrypted.
+- Fetch signing keys for every sender and group member with `get_users_public_keys` (up to 100 ids per call, all key versions). The helper takes the entries as returned and skips incomplete ones.
+- A page with `result_count: 0` that still has a `next_token` is not an empty thread: keep paging, at least 20 events per page. Dropped the encrypted-only framing, the hint that empty `data` can mean an empty thread, and the advice to keep `max_results` small. Agents must not claim they checked all chats unless they read every thread to the end.
 
 ## 2.5.1 — X Chat in the always-read MCP guide
 
