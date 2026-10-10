@@ -205,7 +205,7 @@ Then follow [error 1](#1-sign-in-failed) or [error 2](#2-account-not-ready). Do 
 
 > X Chat needs an extra sign-in. Reconnect the X plugin in this chat and approve access (including messages). Then I'll retry. Don't paste keys, tokens, or your Chat PIN here.
 
-Do not tell them to create a Project or App. Do not ask for a Bearer token. After reconnect, follow [X Chat](#x-chat): clone the helper yourself, secret-request **only** the Chat PIN into `CHAT_PIN`, then read/reply.
+Do not tell them to create a Project or App. Do not ask for a Bearer token. After reconnect, follow [X Chat](#x-chat): clone the helper yourself, use a [saved key](#saved-key) or secret-request **only** the Chat PIN into `CHAT_PIN`, then read/reply.
 
 ## Other errors
 
@@ -343,7 +343,7 @@ When they ask what they can do, re-fetch `{credits}`, say how many they have lef
 - Topic: recent counts → small search page → stop.
 - Bookmarks: list `{me}`. Save: parse status id, create bookmark.
 - One post: parse status id, lookup.
-- X Chat / inbox / DMs: [X Chat](#x-chat). Clone the helper if missing — do not ask the user to find it. Secret-request Chat PIN only. Owner must approve outbound text unless they already said to send or reply.
+- X Chat / inbox / DMs: [X Chat](#x-chat). Clone the helper if missing — do not ask the user to find it. Use a [saved key](#saved-key) or secret-request the Chat PIN only. Owner must approve outbound text unless they already said to send or reply.
 
 ## X Chat
 
@@ -386,7 +386,7 @@ $HELPER $SCRIPT --user-id "$X_USER_ID" --key-version "$VER" --juicebox "$JUICEBO
 
 Not in git with this plugin. Reuse that same `XCHAT_ROOT` on later turns.
 
-**Chat PIN only.** Secret-request into `CHAT_PIN`. Never echo it. Never ask them to paste the PIN into the transcript. The helper also reads Grok Bot `box-secrets.json` → `card.CHAT_PIN` if env is empty. Do not ask for anything else (no Bearer token, no password, no juicebox dump).
+**Chat PIN only.** Secret-request into `CHAT_PIN`. Never echo it. Never ask them to paste the PIN into the transcript. The helper also reads Grok Bot `box-secrets.json` → `card.CHAT_PIN` if env is empty. Do not ask for anything else (no Bearer token, no password, no juicebox dump). Do not ask for the PIN when a saved key works, and ask the remember question every time you do ask — see [Saved key](#saved-key).
 
 `--user-id` is the numeric X id from `get_users_me`. Do not use the shell’s `$UID` (Unix account id).
 
@@ -440,6 +440,12 @@ $HELPER $SCRIPT ... session-encrypt <<'JSON'
   "prepare": null
 }
 JSON
+
+# owner said yes to remembering: unlock with the PIN and save the key (flag before the command)
+$HELPER $SCRIPT --user-id "$X_USER_ID" --key-version "$VER" --juicebox "$JUICEBOX_PATH" --remember-key unlock-check
+
+# delete the saved key
+$HELPER $SCRIPT forget
 ```
 
 `session-encrypt` for **empty / first message** threads: set `prepare` (same shape as `prepare-keys` stdin). Output includes `add_conversation_keys` + `needs_add_conversation_keys_before_send: true`. Call MCP `add_conversation_keys` **before** `send_chat_message`. Strip any `_local_*` fields — never send those to MCP.
@@ -448,6 +454,24 @@ Standalone `encrypt CONV_ID TEXT` fails if the Chat session has no conversation 
 
 Never `echo $CHAT_PIN`. Never `cat` PIN files. Write juicebox config from MCP to a mode-`600` file; mention in chat only “juicebox config saved”.
 
+### Saved key
+
+If the owner agrees, the helper keeps their X Chat private key on this computer so later sessions don't need the PIN.
+
+Run `unlock-check` before asking for the PIN. If it prints `"key_source": "saved"`, use the saved key and do not ask for the PIN.
+
+Every time you secret-request the Chat PIN, ask in that same prompt:
+
+> Should I remember your X Chat key on this computer so you won't need your PIN next time? Anyone with access to this computer could then read your X Chats.
+
+Default is no: add `--remember-key` to the next `unlock-check` only if the owner clearly says yes. Never ask about remembering at any other time.
+
+The first time in a session that `unlock-check` prints `"key_saved": true`, tell the owner:
+
+> Your X Chat key is saved on this computer. Ask me to run `forget` any time to remove it.
+
+When they ask, run `$HELPER $SCRIPT forget`. If a run with `--remember-key` prints `"key_saved": false`, tell the owner the key could not be saved, so they will need the PIN next time. Never open, print, or copy the saved key.
+
 ### Session bootstrap (once per working session)
 
 1. Confirm Chat tools exist. If not, [X Chat scopes](#x-chat-scopes).
@@ -455,8 +479,9 @@ Never `echo $CHAT_PIN`. Never `cat` PIN files. Write juicebox config from MCP to
 3. `get_users_public_key` for self with the valid `public_key.fields` list.
 4. Persist `juicebox_config` as JSON (chmod 600).
 5. Note `public_key_version` as `--key-version`.
-6. Secret-request **Chat PIN** → `CHAT_PIN` if not already in the secret store.
-7. `unlock-check`. On failure: wrong PIN, wrong `--user-id` (must be the X id from `get_users_me`, not the OS `$UID`), incomplete Chat onboarding, or stale juicebox — refresh public key / juicebox; do not brute-force the PIN.
+6. `unlock-check`. If it prints `"key_source": "saved"`, use the saved key: do not ask for the PIN, and skip step 7.
+7. If it stops because `CHAT_PIN` is not set, secret-request **Chat PIN** → `CHAT_PIN` and ask the [Saved key](#saved-key) question in the same prompt. Then run `unlock-check` again, with `--remember-key` only if the owner said yes.
+8. On unlock failure: wrong PIN, wrong `--user-id` (must be the X id from `get_users_me`, not the OS `$UID`), incomplete Chat onboarding, or stale juicebox — refresh public key / juicebox; do not brute-force the PIN.
 
 ### Read / summarize
 
