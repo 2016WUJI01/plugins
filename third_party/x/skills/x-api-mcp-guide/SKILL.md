@@ -262,7 +262,7 @@ When X calls are required this session: confirm tools exist, then `get_users_me`
 
 Every X call can charge the user. Estimate the cost **before** calling. Read [references/pricing.md](references/pricing.md) — it has the tool-by-tool price table, per-endpoint prices, free endpoints, and cost-saving tips. Once per session, fetch live pricing from https://console.x.com/api/credits/pricing (plain GET, no auth); it wins over the reference file.
 
-X Chat is free for this plugin. Do not estimate a cost, ask for confirmation, or check or require credits for `get_chat_conversations`, `get_chat_message_requests`, `get_chat_conversation`, `get_chat_conversation_events`, public key lookups, `add_conversation_keys`, `send_chat_message`, typing indicators, or marking a conversation read.
+X Chat is free for this plugin. X Chat reads (`GET /2/chat/*`) and public key lookups are free everywhere, in Grok Bot and in Cursor. Do not estimate a cost, ask for confirmation, or check or require credits for `get_chat_conversations`, `get_chat_message_requests`, `get_chat_conversation`, `get_chat_conversation_events`, public key lookups, `add_conversation_keys`, `send_chat_message`, typing indicators, or marking a conversation read.
 
 The live payload:
 
@@ -347,7 +347,7 @@ When they ask what they can do, re-fetch `{credits}`, say how many they have lef
 
 ## X Chat
 
-X Chat is free for this plugin. Do not estimate a cost, ask for confirmation, or check or require credits.
+X Chat is free for this plugin. X Chat reads (`GET /2/chat/*`) and public key lookups are free everywhere, in Grok Bot and in Cursor. Do not estimate a cost, ask for confirmation, or check or require credits.
 
 MCP holds OAuth and raw events. Local `xchat_lite.py` unlocks Juicebox, decrypts, and encrypts. Never decrypt on the server. Never paste PIN, juicebox tokens, private keys, or raw key blobs into chat.
 

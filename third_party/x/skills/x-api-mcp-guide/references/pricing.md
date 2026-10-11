@@ -124,7 +124,7 @@ Reference prices for cost estimates. May drift; the live endpoint https://consol
 - Stream connection & management: stream rules, webhook & Account Activity configuration, replay
 - Compliance jobs, connections, usage endpoints
 - Chat/DM sends, communities create, notes
-- X Chat is free for this plugin. Reads: `GET /2/chat/conversations` · `/2/chat/conversations/:id` · `/2/chat/conversations/:id/events` · `/2/chat/message_requests`
+- X Chat is free for this plugin. X Chat reads (`GET /2/chat/*`) and public key lookups (`GET /2/users/:id/public_keys` · `/2/users/public_keys`) are free everywhere, in Grok Bot and in Cursor.
 
 ## Cost-saving tips
 
