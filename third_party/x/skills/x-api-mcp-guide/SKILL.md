@@ -481,7 +481,7 @@ When they ask, run `$HELPER $SCRIPT forget`. If a run with `--remember-key` prin
 4. Persist `juicebox_config` as JSON (chmod 600).
 5. Note `public_key_version` as `--key-version`.
 6. `unlock-check`. If it prints `"key_source": "saved"`, use the saved key: do not ask for the PIN, and skip step 7.
-7. If it stops because `CHAT_PIN` is not set, secret-request **Chat PIN** → `CHAT_PIN` and ask the [Saved key](#saved-key) question in the same prompt. Then run `unlock-check` again, with `--remember-key` only if the owner said yes.
+7. If it stops because `CHAT_PIN` is not set (it does when a saved key no longer matches and no PIN is stored), secret-request **Chat PIN** → `CHAT_PIN` and ask the [Saved key](#saved-key) question in the same prompt. Then run `unlock-check` again, with `--remember-key` only if the owner said yes.
 8. On unlock failure: wrong PIN, wrong `--user-id` (must be the X id from `get_users_me`, not the OS `$UID`), incomplete Chat onboarding, or stale juicebox — refresh public key / juicebox; do not brute-force the PIN.
 
 ### Read / summarize
