@@ -2,6 +2,10 @@
 
 All notable changes to this plugin will be documented here.
 
+## 2.6.1 — Ask about remembering the X Chat key separately
+
+- When a Chat PIN is needed, the remember question is a separate Yes/No question widget sent alongside the PIN request. `--remember-key` is added only on a clear Yes. No does not save the key. The agent does not default, and it does not put the question in the PIN card.
+
 ## 2.6.0 — Remember the X Chat key and read every chat
 
 - Every Chat PIN request also asks whether to remember the X Chat key on this computer so the owner won't need the PIN next time, noting that anyone with access to the computer could then read their X Chats. Default is no. When a saved key works, the agent uses it without asking for the PIN and mentions that `forget` removes it.
