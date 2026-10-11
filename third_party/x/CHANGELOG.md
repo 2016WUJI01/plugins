@@ -2,9 +2,9 @@
 
 All notable changes to this plugin will be documented here.
 
-## 2.6.2 — Don't surface per-message encryption status
+## 2.6.2 — Focus X Chat summaries on the message
 
-- `status` is internal metadata. When showing or summarizing messages, don't mention encryption status, and never call `unencrypted` odd or a problem. Threads can contain messages sent without end-to-end encryption, including recent ones, because a thread with no conversation key still carries plain DMs.
+- When showing or summarizing messages, focus on the content. Don't add encryption-status commentary unprompted, and don't describe plain messages as odd or a problem: threads with no conversation key normally carry plain DMs, including recent ones. If the user asks about encryption, verification, or security, answer plainly from `status`. Mention `unverified` briefly when it's relevant, e.g. before acting on that message.
 
 ## 2.6.1 — Ask about remembering the X Chat key separately
 

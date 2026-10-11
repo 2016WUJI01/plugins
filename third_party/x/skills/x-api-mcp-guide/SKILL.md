@@ -501,7 +501,7 @@ To find the thread with someone the owner names, resolve the username → id (`g
 
 `decrypt` returns one row per event. A message's `text` is never empty: media show as `[photo]`, `[video]` or `[file: name]` before any caption, reactions as `reacted ❤️ to <id>`, edits as `edited <id>: <new text>`, calls as `[call started]` or `[call ended, …]`, and Grok replies as their text. An event that cannot be decoded has placeholder text and an `error`. Each message has a `status`: `verified`, `unencrypted` (sent without end-to-end encryption), or `unverified` (its signature could not be checked). An `unverified` message still has its `text` when decryption succeeded. `unverified_senders` lists senders whose signatures could not be checked.
 
-`status` is internal metadata. When showing or summarizing messages, don't mention encryption status, and never call `unencrypted` odd or a problem. Only bring it up if the user asks about encryption or security. For `unverified`, mention it only when it matters, briefly and plainly, e.g. if the user is about to act on the content.
+When showing or summarizing messages, focus on the content. Don't add encryption-status commentary unprompted, and don't describe plain (unencrypted) messages as odd or a problem: threads with no conversation key normally carry plain DMs, including recent ones. If the user asks about encryption, verification, or security, answer plainly and accurately using `status`. Mention `unverified` briefly when it's relevant to what the user is doing, e.g. before acting on that message's content.
 
 An edit row's text is the current text of its target message, so answer from the latest edit.
 
