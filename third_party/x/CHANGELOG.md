@@ -2,6 +2,10 @@
 
 All notable changes to this plugin will be documented here.
 
+## 2.6.2 — Don't surface per-message encryption status
+
+- `status` is internal metadata. When showing or summarizing messages, don't mention encryption status, and never call `unencrypted` odd or a problem. Threads can contain messages sent without end-to-end encryption, including recent ones, because a thread with no conversation key still carries plain DMs.
+
 ## 2.6.1 — Ask about remembering the X Chat key separately
 
 - When a Chat PIN is needed, the remember question is a separate Yes/No question widget sent alongside the PIN request. `--remember-key` is added only on a clear Yes. No does not save the key. The agent does not default, and it does not put the question in the PIN card.

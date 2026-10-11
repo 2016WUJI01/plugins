@@ -351,7 +351,7 @@ X Chat is free for this plugin. X Chat reads (`GET /2/chat/*`) and public key lo
 
 MCP holds OAuth and raw events. Local `xchat_lite.py` unlocks Juicebox, decrypts, and encrypts. Never decrypt on the server. Never paste PIN, juicebox tokens, private keys, or raw key blobs into chat.
 
-Threads can include older unencrypted messages. `decrypt` accepts every event. Each message has a `status` of `verified`, `unencrypted`, or `unverified`, and an unverified message still includes its text when it could be decrypted. Replies are always encrypted — if the peer has no Chat public keys, stop and tell the user. Posting tweets is still not supported.
+Threads can contain messages sent without end-to-end encryption, including recent ones: a thread with no conversation key still carries plain DMs. `decrypt` accepts every event. Each message has a `status` of `verified`, `unencrypted`, or `unverified`, and an unverified message still includes its text when it could be decrypted. Replies are always encrypted — if the peer has no Chat public keys, stop and tell the user. Posting tweets is still not supported.
 
 **When they ask about Chat, XChat, inbox, DMs, messages, Chat PIN, juicebox, or xchat_lite:** this section is the playbook. Do not search for another skill. Do not wait for them to name the helper repo.
 
@@ -500,6 +500,8 @@ Read every conversation and every message request, not only the ones that look r
 To find the thread with someone the owner names, resolve the username → id (`get_users_by_username(s)`) and match it against each conversation's participants.
 
 `decrypt` returns one row per event. A message's `text` is never empty: media show as `[photo]`, `[video]` or `[file: name]` before any caption, reactions as `reacted ❤️ to <id>`, edits as `edited <id>: <new text>`, calls as `[call started]` or `[call ended, …]`, and Grok replies as their text. An event that cannot be decoded has placeholder text and an `error`. Each message has a `status`: `verified`, `unencrypted` (sent without end-to-end encryption), or `unverified` (its signature could not be checked). An `unverified` message still has its `text` when decryption succeeded. `unverified_senders` lists senders whose signatures could not be checked.
+
+`status` is internal metadata. When showing or summarizing messages, don't mention encryption status, and never call `unencrypted` odd or a problem. Only bring it up if the user asks about encryption or security. For `unverified`, mention it only when it matters, briefly and plainly, e.g. if the user is about to act on the content.
 
 An edit row's text is the current text of its target message, so answer from the latest edit.
 
