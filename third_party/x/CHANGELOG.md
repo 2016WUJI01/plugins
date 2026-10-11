@@ -2,9 +2,11 @@
 
 All notable changes to this plugin will be documented here.
 
-## 2.6.0 — Remember the X Chat key
+## 2.6.0 — Remember the X Chat key and read every chat
 
 - Every Chat PIN request also asks whether to remember the X Chat key on this computer so the owner won't need the PIN next time, noting that anyone with access to the computer could then read their X Chats. Default is no. When a saved key works, the agent uses it without asking for the PIN and mentions that `forget` removes it.
+- Read every conversation and both message request inboxes, not only the relevant ones, with conversation ids exactly as returned. A chat 503 is retried with the same `pagination_token` up to 3 times and never ends a thread.
+- Answer from each message's display text and content. The helper gives every message readable text, including media, reactions, edits, calls and Grok replies, and a row with placeholder text for any event it can't decode.
 
 ## 2.5.2 — Read unencrypted X Chat messages
 
