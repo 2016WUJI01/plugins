@@ -501,6 +501,8 @@ To find the thread with someone the owner names, resolve the username → id (`g
 
 `decrypt` returns one row per event. A message's `text` is never empty: media show as `[photo]`, `[video]` or `[file: name]` before any caption, reactions as `reacted ❤️ to <id>`, edits as `edited <id>: <new text>`, calls as `[call started]` or `[call ended, …]`, and Grok replies as their text. An event that cannot be decoded has placeholder text and an `error`. Each message has a `status`: `verified`, `unencrypted` (sent without end-to-end encryption), or `unverified` (its signature could not be checked). An `unverified` message still has its `text` when decryption succeeded. `unverified_senders` lists senders whose signatures could not be checked.
 
+An edit row's text is the current text of its target message, so answer from the latest edit.
+
 Never claim you checked all chats unless you read every thread and message request to the end; otherwise say how many you read.
 
 If key changes or messages land in `errors`: refresh keys and make sure KeyChange blobs were included.
