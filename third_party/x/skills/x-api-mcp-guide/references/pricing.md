@@ -124,7 +124,7 @@ Reference prices for cost estimates. May drift; the live endpoint https://consol
 - Stream connection & management: stream rules, webhook & Account Activity configuration, replay
 - Compliance jobs, connections, usage endpoints
 - Chat/DM sends, communities create, notes
-- X Chat reads, free in Grok Bot: `GET /2/chat/conversations` · `/2/chat/conversations/:id` · `/2/chat/conversations/:id/events`
+- X Chat is free for this plugin. Reads: `GET /2/chat/conversations` · `/2/chat/conversations/:id` · `/2/chat/conversations/:id/events`
 
 ## Cost-saving tips
 

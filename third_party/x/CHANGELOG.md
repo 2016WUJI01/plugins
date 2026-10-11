@@ -11,7 +11,7 @@ All notable changes to this plugin will be documented here.
 - Threads can include older unencrypted messages. The helper's `decrypt` accepts every event and marks each message `verified`, `unencrypted`, or `unverified`. An unverified message still includes its text when it could be decrypted; only a message that cannot be decrypted comes back without text. Existing helper clones are pulled so they pick this up. Replies are still always encrypted.
 - Fetch signing keys for every sender and group member with `get_users_public_keys` (up to 100 ids per call, all key versions). The helper takes the entries as returned and skips incomplete ones.
 - A page with `result_count: 0` that still has a `next_token` is not an empty thread: keep paging, at least 20 events per page. Dropped the encrypted-only framing, the hint that empty `data` can mean an empty thread, and the advice to keep `max_results` small. Agents must not claim they checked all chats unless they read every thread to the end.
-- X Chat is free in Grok Bot. Do not estimate cost, ask for confirmation, or check credits for conversation and event reads, public key lookups, `add_conversation_keys`, `send_chat_message`, typing indicators, or marking a conversation read. Page the inbox and each relevant thread at `max_results` 100 until `next_token` is absent.
+- X Chat is free for this plugin. Do not estimate cost, ask for confirmation, or check credits for conversation and event reads, public key lookups, `add_conversation_keys`, `send_chat_message`, typing indicators, or marking a conversation read. Page the inbox and each relevant thread at `max_results` 100 until `next_token` is absent.
 
 ## 2.5.1 — X Chat in the always-read MCP guide
 
