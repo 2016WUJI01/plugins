@@ -394,7 +394,7 @@ MCP owns OAuth (`dm.read` / `dm.write`) and ciphertext. Local `chatxdk` + `xchat
 | `get_users_me` | Numeric `user_id` |
 | `get_users_public_key` | Self: `juicebox_config`, `public_key_version`, `public_key`, `signing_public_key`, `identity_public_key_signature` |
 | `get_users_public_keys` | Signing keys for every sender, all versions (up to 100 `ids` per call) |
-| `get_chat_conversations` | Inbox (paginate) |
+| `get_chat_conversations` | Inbox (paginate). Use `max_results` 1000; if that is rejected as too large, use 100 |
 | `get_chat_message_requests` | Pending requests, one `inbox_type` per call (`you_may_know` Priority, `low_quality` Hidden) |
 | `get_chat_message_request` | One request. Marks its messages delivered. Only when the owner asked to open it |
 | `accept_chat_message_request` | Accept a received request into the inbox. Owner must say to accept. A reply does not |
@@ -487,7 +487,7 @@ X tracks which chats are unread. For "what's unread" or "anything new", use that
 
 To find the exact unread messages:
 
-1. `get_chat_conversations` with `unread_only` true, `max_results` 100, and `chat_conversation.fields` `unread,last_read_event_id,newest_event_id`. A page can be short or empty while `meta.has_more` is true: pass `meta.next_token` as `pagination_token` until `has_more` is false. That is every unread conversation. `last_read_event_id` is your read point: the `seen_until_sequence_id` of your latest read receipt.
+1. `get_chat_conversations` with `unread_only` true, `max_results` 1000, and `chat_conversation.fields` `unread,last_read_event_id,newest_event_id`. A page can be short or empty while `meta.has_more` is true: pass `meta.next_token` as `pagination_token` until `has_more` is false. That is every unread conversation. `last_read_event_id` is your read point: the `seen_until_sequence_id` of your latest read receipt.
 2. For each, page `get_chat_conversation_events` with its `id`, `max_results` 100, and `meta.next_token` as `pagination_token`. There is no parameter to start after an event. Events come newest first, so stop at the first event whose `id` is at or below `last_read_event_id`, comparing them as numbers. A page can be empty while `next_token` is set; keep paging. Without `last_read_event_id`, page until `next_token` is absent.
 3. The events above `last_read_event_id` are the unread messages. Leave out the ones you sent. Read further back whenever it helps the answer.
 4. Message requests are not in this list. If `meta.has_message_requests` is true, list them as in step 2 of [Read / summarize](#read--summarize).
@@ -499,7 +499,7 @@ A conversation is unread when its latest notifying message, `newest_event_id`, w
 
 To summarize or search chats, read every conversation and every message request, not only the ones that look relevant. For what's unread, use [Unread](#unread).
 
-1. `get_chat_conversations` with `max_results` 100. Page the whole inbox until `next_token` is absent.
+1. `get_chat_conversations` with `max_results` 1000. Page the whole inbox until `next_token` is absent.
 2. [Message requests](#message-requests): `get_chat_message_requests` with `max_results` 50, once with `inbox_type` `you_may_know` and once with `low_quality`, each paged until `next_token` is absent. Do not call `get_chat_message_request` while scanning.
 3. `get_chat_conversation_events` for every conversation, and for every request with `has_more_events` (otherwise its `message_events` are the whole conversation), with `max_results` 100. Use each conversation's `id` and each request's `conversation_id` exactly as returned; do not rebuild ids from user ids. A page with `result_count: 0` that still has a `next_token` is not an empty thread: keep paging until `next_token` is absent.
 4. If a chat call returns 503, retry it with the same `pagination_token` up to 3 times. Never treat a thread or a list as complete after a 503. If it keeps failing, tell the owner which threads you could not finish.
