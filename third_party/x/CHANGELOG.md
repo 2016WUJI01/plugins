@@ -2,6 +2,12 @@
 
 All notable changes to this plugin will be documented here.
 
+## 2.6.4 — Exact unread messages, and mark-read covers the whole conversation
+
+- To find the exact unread messages, list the unread conversations, then page each one's `get_chat_conversation_events` newest first and stop at the first event whose `id` is at or below `last_read_event_id`, the `seen_until_sequence_id` of the owner's latest read receipt. No parameter starts after an event. The events above it, except the owner's own, are the unread messages.
+- A conversation is unread when its latest notifying message, `newest_event_id`, is from someone else after `last_read_event_id`, or when there is no read receipt. Marking a conversation unread does not set `unread`.
+- `mark_chat_conversation_read` takes only `id` and always marks the whole conversation read.
+
 ## 2.6.3 — Built-in public reads, unread state, message requests, no congrats line
 
 - Built-in public reads need no X connection, credits check, or cost estimate. Grok Bot reads public posts, users, search, trends, and news on its own, and a missing `get_usage_credits` or `get_users_me` next to those reads is not an error.

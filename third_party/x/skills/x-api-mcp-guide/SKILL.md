@@ -403,7 +403,7 @@ MCP owns OAuth (`dm.read` / `dm.write`) and ciphertext. Local `chatxdk` + `xchat
 | `send_chat_message` | Pre-encrypted `message_id` + `encoded_message_create_event` (+ signature) |
 | `add_conversation_keys` | Output of local `prepare-keys` / `session-encrypt.add_conversation_keys` |
 | `send_chat_typing_indicator` | Optional UX (do not hammer) |
-| `mark_chat_conversation_read` | Optional after handling |
+| `mark_chat_conversation_read` | Optional after handling. Pass only `id`: it always marks the whole conversation read |
 
 **Valid `public_key.fields`:**  
 `public_key_version,public_key,signing_public_key,identity_public_key_signature,juicebox_config`  
@@ -485,12 +485,15 @@ When they ask, run `$HELPER $SCRIPT forget`. If a run with `--remember-key` prin
 
 X tracks which chats are unread. For "what's unread" or "anything new", use that: don't work it out by scanning every conversation for events newer than the read point.
 
-1. `get_chat_conversations` with `unread_only` true, `max_results` 100, and `chat_conversation.fields` `unread,last_read_event_id,newest_event_id`. A page can be short or empty while `meta.has_more` is true: pass `meta.next_token` as `pagination_token` until `has_more` is false. That is every unread conversation.
-2. For each, page `get_chat_conversation_events` until you reach `last_read_event_id`. Events after it are the unread messages (all of them if it is missing). Read further back whenever it helps the answer.
-3. Message requests are not in this list. If `meta.has_message_requests` is true, list them as in step 2 of [Read / summarize](#read--summarize).
-4. Get signing keys and decrypt as in [Read / summarize](#read--summarize).
+To find the exact unread messages:
 
-`unread` is always true or false. `get_chat_conversation` takes the same fields for one thread.
+1. `get_chat_conversations` with `unread_only` true, `max_results` 100, and `chat_conversation.fields` `unread,last_read_event_id,newest_event_id`. A page can be short or empty while `meta.has_more` is true: pass `meta.next_token` as `pagination_token` until `has_more` is false. That is every unread conversation. `last_read_event_id` is your read point: the `seen_until_sequence_id` of your latest read receipt.
+2. For each, page `get_chat_conversation_events` with its `id`, `max_results` 100, and `meta.next_token` as `pagination_token`. There is no parameter to start after an event. Events come newest first, so stop at the first event whose `id` is at or below `last_read_event_id`, comparing them as numbers. A page can be empty while `next_token` is set; keep paging. Without `last_read_event_id`, page until `next_token` is absent.
+3. The events above `last_read_event_id` are the unread messages. Leave out the ones you sent. Read further back whenever it helps the answer.
+4. Message requests are not in this list. If `meta.has_message_requests` is true, list them as in step 2 of [Read / summarize](#read--summarize).
+5. Get signing keys and decrypt as in [Read / summarize](#read--summarize).
+
+A conversation is unread when its latest notifying message, `newest_event_id`, was sent by someone else after `last_read_event_id`, or when you have no read receipt in it. `unread` is always true or false. Marking a conversation unread does not set it. `get_chat_conversation` takes the same fields for one thread.
 
 ### Read / summarize
 
