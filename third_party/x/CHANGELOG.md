@@ -2,6 +2,11 @@
 
 All notable changes to this plugin will be documented here.
 
+## 2.6.6 — media.write scope
+
+- Requested `media.write`.
+- Existing installs need to sign in to X again to pick up the new scope.
+
 ## 2.6.5 — Unread and chat summaries focus on the main inbox
 
 - For what's unread and for reading or summarizing chats, read only inbox conversations. Don't list, open, or decrypt message requests. If `meta.has_message_requests` is true, end with one line offering to go through them.
