@@ -403,7 +403,7 @@ MCP owns OAuth (`dm.read` / `dm.write`) and ciphertext. Local `chatxdk` + `xchat
 | `send_chat_message` | Pre-encrypted `message_id` + `encoded_message_create_event` (+ signature) |
 | `add_conversation_keys` | Output of local `prepare-keys` / `session-encrypt.add_conversation_keys` |
 | `send_chat_typing_indicator` | Optional UX (do not hammer) |
-| `mark_chat_conversation_read` | Optional after handling |
+| `mark_chat_conversation_read` | Optional after handling. Takes only `id` and always marks the whole conversation read |
 
 **Valid `public_key.fields`:**  
 `public_key_version,public_key,signing_public_key,identity_public_key_signature,juicebox_config`  
@@ -486,11 +486,11 @@ When they ask, run `$HELPER $SCRIPT forget`. If a run with `--remember-key` prin
 X tracks which chats are unread. For "what's unread" or "anything new", use that: don't work it out by scanning every conversation for events newer than the read point.
 
 1. `get_chat_conversations` with `unread_only` true, `max_results` 1000, and `chat_conversation.fields` `unread,last_read_event_id,newest_event_id`. A page can be short or empty while `meta.has_more` is true: pass `meta.next_token` as `pagination_token` until `has_more` is false. That is every unread conversation.
-2. For each, page `get_chat_conversation_events` with `max_results` 100 until you reach `last_read_event_id`; an empty page with a `next_token` is not the end. Events after it, except the ones you sent, are the unread messages (all of them if it is missing). Read further back whenever it helps the answer.
+2. For each, page `get_chat_conversation_events` with `max_results` 100. Events come newest first and no parameter starts after an event, so stop at the first event whose `id` is at or below `last_read_event_id`, the `seen_until_sequence_id` of your latest read receipt. An empty page with a `next_token` is not the end. Events above `last_read_event_id`, except the ones you sent, are the unread messages (all of them if it is missing). Read further back whenever it helps the answer.
 3. Message requests are not in this list. If `meta.has_message_requests` is true, list them as in step 2 of [Read / summarize](#read--summarize).
 4. Get signing keys and decrypt as in [Read / summarize](#read--summarize).
 
-`unread` is always true or false. `get_chat_conversation` takes the same fields for one thread.
+`unread` is always true or false. Marking a conversation unread does not set it. `get_chat_conversation` takes the same fields for one thread.
 
 ### Read / summarize
 

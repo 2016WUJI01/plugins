@@ -2,10 +2,11 @@
 
 All notable changes to this plugin will be documented here.
 
-## 2.6.4 — 1000-conversation inbox pages
+## 2.6.4 — Exact unread messages, 1000-conversation inbox pages
 
 - List conversations with `get_chat_conversations` `max_results` 1000.
-- Unread messages leave out the owner's own messages, and paging continues past an empty events page that still has a `next_token`.
+- To find the unread messages, page `get_chat_conversation_events` newest first, past empty pages that still have a `next_token`, and stop at the first event at or below `last_read_event_id`. Leave out the owner's own messages.
+- `mark_chat_conversation_read` takes only `id` and always marks the whole conversation read. Marking a conversation unread does not set `unread`.
 
 ## 2.6.3 — Built-in public reads, unread state, message requests, no congrats line
 
