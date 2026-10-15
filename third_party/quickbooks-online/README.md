@@ -25,7 +25,7 @@ Or run `/add-plugin quickbooks-online` in chat.
 }
 ```
 
-The server is Intuit's, hosted by Intuit. Auth is OAuth against Intuit, which Cursor runs when the plugin connects — there is no command to run, and no API key or client secret to paste.
+Intuit hosts the server. Auth is OAuth against Intuit, which Cursor runs when the plugin connects — there is no command to run, and no API key or client secret to paste.
 
 ## Before you connect
 
