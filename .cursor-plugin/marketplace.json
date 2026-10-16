@@ -176,7 +176,7 @@
     {
       "name": "x",
       "source": "third_party/x",
-      "description": "Search posts, read timelines, pull trends, manage bookmarks, and access X Chat."
+      "description": "Search posts, read timelines, pull trends, manage bookmarks, access X Chat, and schedule X calls."
     },
     {
       "name": "clay",
