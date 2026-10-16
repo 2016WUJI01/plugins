@@ -552,6 +552,11 @@
       "name": "tiktok-for-business",
       "source": "third_party/tiktok-for-business",
       "description": "Manage TikTok ad campaigns, ad groups, ads, audiences, creatives, and reports."
+    },
+    {
+      "name": "gusto",
+      "source": "third_party/gusto",
+      "description": "Work with payroll, employees, contractors, time off, and reports."
     }
   ]
 }
