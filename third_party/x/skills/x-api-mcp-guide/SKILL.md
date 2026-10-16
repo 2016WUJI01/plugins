@@ -275,7 +275,7 @@ Every X call can charge the user. Estimate the cost **before** calling. Read [re
 
 X Chat is free for this plugin. X Chat reads (`GET /2/chat/*`) and public key lookups are free everywhere, in Grok Bot and in Cursor. Do not estimate a cost, ask for confirmation, or check or require credits for `get_chat_conversations`, `get_chat_message_requests`, `get_chat_message_request`, `accept_chat_message_request`, `get_chat_conversation`, `get_chat_conversation_events`, public key lookups, `add_conversation_keys`, `send_chat_message`, typing indicators, or marking a conversation read.
 
-Scheduled X calls are not in [references/pricing.md](references/pricing.md). Check the live pricing table before one. If `calls` is not listed, do not invent a price. Schedule, update, cancel, and RSVP still need a yes, because they change the owner's calendar and can email invitees.
+Scheduled X calls are free, including on Grok Bot. Do not estimate a cost, ask for confirmation, or check or require credits for `list_scheduled_calls`, `get_scheduled_call`, `schedule_call`, `update_scheduled_call`, `cancel_scheduled_call`, or `respond_to_scheduled_call`.
 
 The live payload:
 
