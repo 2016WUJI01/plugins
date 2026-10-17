@@ -524,6 +524,21 @@
       "description": "Send messages and manage templates, contacts, and phone numbers in WhatsApp Business."
     },
     {
+      "name": "zoho-crm",
+      "source": "third_party/zoho-crm",
+      "description": "Work with leads, contacts, accounts, deals, and other Zoho CRM records."
+    },
+    {
+      "name": "zoho-desk",
+      "source": "third_party/zoho-desk",
+      "description": "Work with tickets, contacts, tasks, and knowledge base articles in Zoho Desk."
+    },
+    {
+      "name": "zoho-books",
+      "source": "third_party/zoho-books",
+      "description": "Work with contacts, invoices, estimates, and items in Zoho Books."
+    },
+    {
       "name": "square",
       "source": "third_party/square",
       "description": "Work with payments, orders, catalog, customers, and invoices."
