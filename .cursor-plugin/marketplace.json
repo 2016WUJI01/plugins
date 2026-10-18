@@ -124,6 +124,11 @@
       "description": "Create, edit, and render presentations."
     },
     {
+      "name": "google-ads",
+      "source": "third_party/google-ads",
+      "description": "Report on campaigns, research keywords, and make previewed changes."
+    },
+    {
       "name": "gong",
       "source": "third_party/gong",
       "description": "Pull account summaries, deal insights, and call briefs."
