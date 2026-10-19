@@ -148,6 +148,8 @@ Missing **Chat** tools (`get_chat_conversations`, `send_chat_message`, …) whil
 
 Missing **call** tools (`schedule_call`, `list_scheduled_calls`, …) while other X tools work is **not** #2. That is [X call scopes](#x-call-scopes) — reconnect for `calls.read` / `calls.write`.
 
+Missing **livestream** tools (`list_sources`, `create_scheduled_broadcast`, …) while other X tools work is **not** #2. That is [Livestream scopes](#livestream-scopes) — reconnect for `broadcast.read` / `broadcast.write`.
+
 **When (fallback):** `client-forbidden`; `user-not-enrolled`; `client-not-enrolled`; Client Forbidden; 403 on timeline / mentions / search / bookmarks after Connect.
 
 **Say:**
@@ -276,7 +278,8 @@ When X calls are required this session: confirm tools exist, then `get_users_me`
 
 | Result                         | Next |
 | ------------------------------ | ---- |
-| Tools missing / not found      | [Error 2](#2-account-not-ready). Stop. |
+| Every X tool missing / not found | [Error 2](#2-account-not-ready). Stop. |
+| Only Chat, call, or livestream tools missing | Not error 2. [X Chat scopes](#x-chat-scopes), [X call scopes](#x-call-scopes), or [Livestream scopes](#livestream-scopes) — reconnect. |
 | Success                        | Cache `{me}` and `{credits}`. If `{credits}` is ~$0, use the On connect $0 copy — not error 3. Otherwise do their ask if it fits. Prefer `{me}` for timeline, mentions, bookmarks. |
 | Error 1                        | Quoted line only. Do not search. |
 | Error 2                        | Quoted line only. Do not search. |
