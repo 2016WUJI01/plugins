@@ -72,7 +72,7 @@ Posting is not included: the plugin does not request the `tweet.write` scope, so
 
 No token to paste — the plugin ships with X's OAuth client ID and requests the scopes above. On first use, Cursor opens a browser window where you sign in to X and approve access. The `offline.access` scope lets Cursor refresh the session automatically, so you only sign in once.
 
-X tools are included in Grok Bot at no cost. Only webhooks and X Activity API subscriptions bill against your X API credits.
+X tools are included in Grok Bot at no cost.
 
 Requests run in your user context, so they count against your account's rate limits. You can revoke access at any time from your X account's connected apps settings.
 

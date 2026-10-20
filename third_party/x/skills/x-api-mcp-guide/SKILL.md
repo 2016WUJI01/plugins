@@ -4,9 +4,8 @@ description: >-
   ALWAYS read this before using any X tool (the X plugin, any X MCP, or Grok
   Bot's built-in public X reads) and again on any X error. X tools are included
   in Grok Bot at no cost: never estimate costs, check credits, or tell the user
-  to buy credits, except for webhooks and X Activity API (XAA) subscriptions,
-  the only billed endpoints. tools=0 / user-X-* not found is a setup failure,
-  not a paywall. Covers X Chat (XChat, inbox, DMs, unread, message requests,
+  to buy credits. tools=0 / user-X-* not found is a setup failure, not a
+  paywall. Covers X Chat (XChat, inbox, DMs, unread, message requests,
   Chat PIN, juicebox, xchat_lite: clone xchat-grokbot-helper yourself and
   decrypt locally), scheduled X calls (schedule_call, list_scheduled_calls and
   the other call tools), and livestreams (stream sources, broadcasts, scheduled
@@ -19,7 +18,7 @@ The X plugin connects to X's hosted MCP server. The user taps **Connect** on the
 
 ## Ground rules
 
-- X tools are included in Grok Bot through the X connector. Everything is free except [webhooks and XAA](#billed-webhooks-and-xaa).
+- X tools are included in Grok Bot through the X connector, at no cost ([Billing](#billing)).
 - On an error, stop, name the simple issue, and give the next step. Never retry a 401, 403, missing tools, or credits error unchanged.
 - The X connector's OAuth is the only way in. Never ask for or accept a Bearer token, API key, password, or `X_BEARER_TOKEN`, and never call `api.x.com` yourself. The one secret you may request is the Chat PIN, by secret-request ([X Chat](#x-chat)).
 - Never sign the user into x.com or console.x.com in the agent browser or on this computer.
@@ -29,17 +28,7 @@ The X plugin connects to X's hosted MCP server. The user taps **Connect** on the
 
 ## Billing
 
-Every X tool is free except webhooks and XAA. For everything else, don't estimate a cost, check credits, ask for cost confirmation, or mention buying credits, including for bulk reads and long pagination. Rate limits are per user ([429](#other-errors)).
-
-### Billed: webhooks and XAA
-
-Webhooks (webhook configs, Account Activity, replay) and X Activity API subscriptions (`/2/activity/subscriptions`) are not included in Grok Bot. They bill against the user's X API credits, mostly per event delivered. Before creating or changing one:
-
-1. `get_usage_credits` (free). `data.total_balance` is the remaining balance in US dollars (`20.0` is $20.00). Ignore the other fields.
-2. Tell them the balance and the delivery prices: post $0.005, user or follow $0.01, direct message $0.01, profile update $0.005, like $0.001, mute or block $0.001 per event. Live prices from https://console.x.com/api/credits/pricing (plain GET, no auth) win.
-3. Wait for a yes. If the balance is about $0, say so and send them to https://console.x.com to add credits.
-
-If they ask about their credits, call `get_usage_credits`, give `total_balance`, and say credits are only used for webhooks and XAA.
+Every X tool is free. Don't estimate a cost, check credits, ask for cost confirmation, or mention buying credits, including for bulk reads and long pagination. Rate limits are per user ([429](#other-errors)).
 
 ## Connect
 
@@ -66,7 +55,7 @@ Before any user-facing X text:
 
 ### Built-in public reads
 
-Some hosts, like Grok Bot, read public posts, users, search, trends, and news through their own X access with no X connection. For those, don't ask the user to connect X. `get_users_me` and `get_usage_credits` exist only on the user's connection, so their absence next to built-in reads is not error 2 or an outage. The user's own account, home timeline, bookmarks, chats, calls, and livestreams need their X connection.
+Some hosts, like Grok Bot, read public posts, users, search, trends, and news through their own X access with no X connection. For those, don't ask the user to connect X. `get_users_me` exists only on the user's connection, so its absence next to built-in reads is not error 2 or an outage. The user's own account, home timeline, bookmarks, chats, calls, and livestreams need their X connection.
 
 ## Errors
 
@@ -92,13 +81,15 @@ Trigger reconnect if you can and probe once. If it still 401s, stop. Connected w
 
 Don't retry, search, or add more enrollment explanation. If only some tools are missing, it is [missing scopes](#missing-scopes) or an [outage](#other-errors), not this.
 
-### 3. Out of credits
+### 3. Credits or usage errors
 
-**When:** a webhook or XAA call is blocked until credits are added ("does not have any credits", credits-blocked).
+**When:** "does not have any credits", credits-blocked, or `usage-capped`.
 
-> You're out of credits for webhooks and the X Activity API. Go to https://console.x.com and add credits, then I'll retry. Everything else on X still works.
+X tools don't use credits, so a credits error is unexpected. Don't send them to buy credits. Say:
 
-Re-check `get_usage_credits` before retrying. A credits error on any other X tool is unexpected: don't send them to buy credits, say X returned an unexpected billing error and to try again later. Only `usage-capped`: "You hit a limit. Try again later."
+> X returned an unexpected billing error (this one isn't on you). Try again in a bit.
+
+Only `usage-capped`: "You hit a limit. Try again later."
 
 ### Missing scopes
 
