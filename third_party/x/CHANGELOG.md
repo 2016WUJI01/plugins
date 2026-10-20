@@ -8,6 +8,9 @@ All notable changes to this plugin will be documented here.
 - A credits error is now treated as an unexpected X error, never a prompt to buy credits.
 - Rebuilt the X MCP guide from scratch at about half the length: one billing section, one missing-scopes section for Chat, calls, and livestreams, and a tighter X Chat flow. Removed the pricing reference, the starter-credits table, and the budget tiers.
 - Opening a message request pages its events and uses only those pages, so the preview is not decrypted twice.
+- The reading table names real tools (`get_users_by_username`, `search_posts_all`, `get_trends_by_woeid`, …) and covers trends. Recent search is `search_posts_all` with `start_time`.
+- Public reads (post lookups, search, user lookups, news, trends) live on Grok Bot's built-in X tools; their absence from the user's X connection is not an error.
+- X Chat unlock runs `unlock-check` first, so a saved key or stored PIN is used before asking for the PIN.
 
 ## 2.8.1 — Broadcast chat history
 

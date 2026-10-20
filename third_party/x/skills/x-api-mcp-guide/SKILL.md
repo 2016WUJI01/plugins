@@ -55,7 +55,7 @@ Before any user-facing X text:
 
 ### Built-in public reads
 
-Some hosts, like Grok Bot, read public posts, users, search, trends, and news through their own X access with no X connection. For those, don't ask the user to connect X. `get_users_me` exists only on the user's connection, so its absence next to built-in reads is not error 2 or an outage. The user's own account, home timeline, bookmarks, chats, calls, and livestreams need their X connection.
+Public reads live on Grok Bot's built-in X tools, not on the user's X connection: post lookups (`get_posts_by_id`, `get_posts_by_ids`), search (`search_posts_all`, `get_posts_counts_recent`), user lookups (`get_users_by_username`, `get_users_by_usernames`, `get_users_by_id`, `search_users`), news (`search_news`, `get_news`), and trends (`get_trends_by_woeid`). For those, don't ask the user to connect X. Their absence from the user's X connection is expected: not error 2, not missing scopes, and not an outage. Likewise `get_users_me` exists only on the user's connection, so its absence next to built-in reads is not an error. The user's own account, home timeline, bookmarks, chats, calls, and livestreams need their X connection.
 
 ## Errors
 
@@ -71,7 +71,7 @@ Trigger reconnect if you can and probe once. If it still 401s, stop. Connected w
 
 ### 2. Account not ready
 
-**When:** X is connected but **every** X tool is missing: `X [connected]` with `tools=0`, no X or `user-X` namespace, or `user-X-get_users_me` not found with no other `user-X-*` tool. Also `client-forbidden`, `user-not-enrolled`, `client-not-enrolled`, or a 403 on timeline, mentions, search, or bookmarks after Connect.
+**When:** X is connected but **every** X tool is missing: `X [connected]` with `tools=0`, no X or `user-X` namespace, or `user-X-get_users_me` not found with no other `user-X-*` tool. Also `client-forbidden`, `user-not-enrolled`, `client-not-enrolled`, or a 403 on timeline, mentions, or bookmarks after Connect. Missing [built-in public read](#built-in-public-reads) tools on the connection is never this.
 
 > X is connected, but this account isn't ready yet. Please remove and reinstall the X connection, then reconnect. If this doesn't work, please try the following:
 >
@@ -120,12 +120,15 @@ Then follow error 1 or 2 if that is the real failure.
 
 | They asked | You do | Else ask |
 | --- | --- | --- |
-| `@handle` posts | Username lookup, else user search; one match is that `id` | Paste the profile. |
-| A post | Parse `/status/{id}` | Paste the post link. |
-| Home, mentions, my posts, bookmarks | Use `{me}` | Reconnect X. |
-| Bookmark folder | List folders on `{me}` | Which folder? |
-| News | News search | What topic? |
-| Topic | Recent counts, then a search | What should I search? |
+| `@handle` posts | `get_users_by_username`, else `search_users` (one match is that `id`), then `get_users_posts` | Paste the profile. |
+| A post | Parse `/status/{id}`, then `get_posts_by_id` (`get_posts_by_ids` for several) | Paste the post link. |
+| Who liked, reposted, or quoted a post | `get_posts_liking_users`, `get_posts_reposted_by`, `get_posts_quoted_posts` | Paste the post link. |
+| Home, mentions, my posts | `get_users_timeline`, `get_users_mentions`, `get_users_posts` on `{me}` | Reconnect X. |
+| Bookmarks | `get_users_bookmarks` on `{me}` | Reconnect X. |
+| Bookmark folder | `get_users_bookmark_folders`, then `get_users_bookmarks_by_folder_id` | Which folder? |
+| News | `search_news`; `get_news` for one story by `id` | What topic? |
+| Trends | `get_trends_by_woeid` (`1` is worldwide) | Which location? |
+| Topic | `get_posts_counts_recent`, then `search_posts_all` | What should I search? |
 
 If a tool takes `tweet.fields` or `post.fields`, send `created_at,public_metrics,author_id,lang,conversation_id`. Also send `user.fields=created_at,description,public_metrics,verified,location` and `expansions=author_id,referenced_tweets.id`.
 
@@ -136,7 +139,7 @@ from:handle  to:handle  @handle  #tag  "exact phrase"  url:example.com  lang:en
 -is:retweet  -is:reply  is:verified  has:images  has:video_link  has:links  conversation_id:ID
 ```
 
-Spaces mean AND. Recent search covers 7 days, max 512 characters; full-archive max 1,024. Use `min_likes:` and `min_reposts:`, not `min_faves:` or `min_retweets:`.
+Spaces mean AND. `search_posts_all` is the only post search: it covers the full archive, queries up to 1,024 characters. For recent posts, pass `start_time` (for the last 7 days, a week back in ISO 8601). Use `min_likes:` and `min_reposts:`, not `min_faves:` or `min_retweets:`.
 
 ## Scheduled calls
 
@@ -246,12 +249,12 @@ Once per session:
 1. Confirm the Chat tools exist; if not, [missing scopes](#missing-scopes).
 2. `get_users_me` for `$X_USER_ID`.
 3. `get_users_public_key` for yourself with `public_key.fields` `public_key_version,public_key,signing_public_key,identity_public_key_signature,juicebox_config` (not `identity_public_key`). Save `juicebox_config`; `public_key_version` is `--key-version`.
-4. `unlock-check`. If it prints `"key_source": "saved"`, use the saved key and don't ask for the PIN.
-5. If it stops because `CHAT_PIN` isn't set, secret-request the **Chat PIN** into `CHAT_PIN`, and alongside it send a separate Yes/No question widget (not inside the PIN card):
+4. Run `unlock-check` before asking for anything. The helper checks what's already stored, in order: the saved key, `CHAT_PIN` in the env, then Grok Bot `box-secrets.json` (`card.CHAT_PIN`). If it unlocks (`"key_source": "saved"` or `"pin"`), don't ask for the PIN.
+5. Only if it stops with "CHAT_PIN is not set", secret-request the **Chat PIN** into `CHAT_PIN`, and alongside it send a separate Yes/No question widget (not inside the PIN card):
 
    > Should I remember your X Chat key on this computer so you won't need your PIN next time? Anyone with access to this computer could then read your X Chats.
 
-   Wait for both the PIN and the answer before running `unlock-check` again, with `--remember-key` only on a clear Yes. Never default, and never ask about remembering at any other time. The helper also reads Grok Bot `box-secrets.json` (`card.CHAT_PIN`) when the env var is empty. Ask for nothing but the PIN.
+   Wait for both the PIN and the answer before running `unlock-check` again, with `--remember-key` only on a clear Yes. Never default, and never ask about remembering at any other time. Ask for nothing but the PIN.
 6. The first time `unlock-check` prints `"key_saved": true`, say: "Your X Chat key is saved on this computer. Ask me to run `forget` any time to remove it." If it prints `"key_saved": false`, say the key couldn't be saved, so they'll need the PIN next time. Never open, print, or copy the saved key.
 7. On failure: wrong PIN, wrong `--user-id`, incomplete Chat onboarding, or a stale juicebox. Refresh the public key and juicebox. Don't brute-force the PIN.
 
