@@ -260,7 +260,7 @@ Once per session:
 
    > Should I remember your X Chat key on this computer so you won't need your PIN next time? Anyone with access to this computer could then read your X Chats.
 
-   Run `unlock-check` again, with `--remember-key` only on a clear Yes. Never default, and never ask about remembering at any other time. The helper also reads Grok Bot `box-secrets.json` (`card.CHAT_PIN`) when the env var is empty. Ask for nothing but the PIN.
+   Wait for both the PIN and the answer before running `unlock-check` again, with `--remember-key` only on a clear Yes. Never default, and never ask about remembering at any other time. The helper also reads Grok Bot `box-secrets.json` (`card.CHAT_PIN`) when the env var is empty. Ask for nothing but the PIN.
 6. The first time `unlock-check` prints `"key_saved": true`, say: "Your X Chat key is saved on this computer. Ask me to run `forget` any time to remove it." If it prints `"key_saved": false`, say the key couldn't be saved, so they'll need the PIN next time. Never open, print, or copy the saved key.
 7. On failure: wrong PIN, wrong `--user-id`, incomplete Chat onboarding, or a stale juicebox. Refresh the public key and juicebox. Don't brute-force the PIN.
 
