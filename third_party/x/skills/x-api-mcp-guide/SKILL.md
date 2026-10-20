@@ -5,11 +5,12 @@ description: >-
   Bot's built-in public X reads) and again on any X error. X tools are included
   in Grok Bot at no cost: never estimate costs, check credits, or tell the user
   to buy credits. tools=0 / user-X-* not found is a setup failure, not a
-  paywall. Covers Spaces, communities, and Lists (reads and list writes), X Chat (XChat, inbox, DMs, unread, message requests,
-  Chat PIN, juicebox, xchat_lite: clone xchat-grokbot-helper yourself and
-  decrypt locally), scheduled X calls (schedule_call, list_scheduled_calls and
-  the other call tools), and livestreams (stream sources, broadcasts, scheduled
-  broadcasts, broadcast chat, moderators, mutes). Chat, call, or livestream
+  paywall. Covers Spaces, communities, and Lists (reads and list writes), X
+  Chat (XChat, inbox, DMs, unread, message requests, Chat PIN, juicebox,
+  xchat_lite: clone xchat-grokbot-helper yourself and decrypt locally),
+  scheduled X calls (schedule_call, list_scheduled_calls and the other call
+  tools), and livestreams (stream sources, broadcasts, scheduled broadcasts,
+  broadcast chat, moderators, mutes). Chat, call, livestream, Spaces, or Lists
   tools missing while other X tools work: reconnect the X plugin.
 ---
 # X MCP guide
@@ -57,7 +58,7 @@ Before any user-facing X text:
 
 ### Built-in public reads
 
-Public reads live on Grok Bot's built-in X tools, not on the user's X connection: post lookups (`get_posts_by_id`, `get_posts_by_ids`), search (`search_posts_all`, `get_posts_counts_recent`), user lookups (`get_users_by_username`, `get_users_by_usernames`, `get_users_by_id`, `search_users`), news (`search_news`, `get_news`), and trends (`get_trends_by_woeid`). For those, don't ask the user to connect X. Their absence from the user's X connection is expected: not error 2, not missing scopes, and not an outage. Likewise `get_users_me` exists only on the user's connection, so its absence next to built-in reads is not an error. The user's own account, home timeline, bookmarks, chats, calls, and livestreams need their X connection.
+Public reads live on Grok Bot's built-in X tools, not on the user's X connection: post lookups (`get_posts_by_id`, `get_posts_by_ids`), search (`search_posts_all`, `get_posts_counts_recent`), user lookups (`get_users_by_username`, `get_users_by_usernames`, `get_users_by_id`, `search_users`), news (`search_news`, `get_news`), and trends (`get_trends_by_woeid`). For those, don't ask the user to connect X. Their absence from the user's X connection is expected: not error 2, not missing scopes, and not an outage. Likewise `get_users_me` exists only on the user's connection, so its absence next to built-in reads is not an error. The user's own account, home timeline, bookmarks, Spaces, communities, lists, chats, calls, and livestreams need their X connection.
 
 ## Errors
 
@@ -137,7 +138,7 @@ Then follow error 1 or 2 if that is the real failure.
 | Someone's Spaces | Resolve the handle, then `get_spaces_by_creator_ids` | Paste the profile. |
 | Communities | `search_communities`, then `get_communities_by_id` for details (members, access) | What topic? |
 | A list | `get_lists_by_id`, `get_lists_posts`, `get_lists_members`, `get_lists_followers` | Paste the list link. |
-| Someone's lists | `get_users_owned_lists`, `get_users_followed_lists`, `get_users_pinned_lists`, `get_users_list_memberships` (`{me}` for theirs) | Paste the profile. |
+| Someone's lists | `get_users_owned_lists`, `get_users_followed_lists`, `get_users_pinned_lists`, `get_users_list_memberships` (`{me}` for your own) | Paste the profile. |
 
 If a tool takes `tweet.fields` or `post.fields`, send `created_at,public_metrics,author_id,lang,conversation_id`. Also send `user.fields=created_at,description,public_metrics,verified,location` and `expansions=author_id,referenced_tweets.id`.
 
@@ -161,7 +162,7 @@ No tool reads a community's posts: give the community's details and offer a `sea
 | `follow_list` / `unfollow_list` | Follow or unfollow a list on `{me}` |
 | `pin_list` / `unpin_list` | Pin or unpin a list on `{me}` |
 
-Before a write, repeat the list and what will change. Resolve handles to ids with `get_users_by_username(s)`. There's no tool to delete a list: say so and offer to make it private, rename it, or remove its members. A 403 on these with `list.write` means [missing scopes](#missing-scopes).
+Before a write, repeat the list and what will change. Resolve handles to ids with `get_users_by_username` or `get_users_by_usernames`. There's no tool to delete a list: say so and offer to make it private, rename it, or remove its members. A 403 on these with `list.write` means [missing scopes](#missing-scopes).
 
 ## Scheduled calls
 

@@ -4,7 +4,7 @@ All notable changes to this plugin will be documented here.
 
 ## 2.10.0 — Spaces, Communities, and Lists
 
-- Added Spaces (`search_spaces`, `get_spaces_by_id(s)`, `get_spaces_by_creator_ids`, `get_spaces_posts`), Communities (`search_communities`, `get_communities_by_id`), and Lists: eight reads plus `create_lists`, `update_lists`, member, follow, and pin writes. There's no tool to delete a list or read a community's posts. All are free.
+- Added Spaces (`search_spaces`, `get_spaces_by_id`, `get_spaces_by_ids`, `get_spaces_by_creator_ids`, `get_spaces_posts`), Communities (`search_communities`, `get_communities_by_id`), and Lists: eight reads plus `create_lists`, `update_lists`, member, follow, and pin writes. There's no tool to delete a list or read a community's posts. All are free.
 - The connect message, reading table, and README list these, a new "Managing lists" section covers list writes, and missing Spaces or Lists tools route to the reconnect path.
 
 ## 2.9.0 — Free X tools, rebuilt guide
