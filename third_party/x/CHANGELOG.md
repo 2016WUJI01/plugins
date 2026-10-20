@@ -2,6 +2,13 @@
 
 All notable changes to this plugin will be documented here.
 
+## 2.9.0 — Free X tools, rebuilt guide
+
+- X tools are included in Grok Bot through the X connector. Agents no longer estimate costs, check credits, or ask for cost confirmation, and the on-connect message no longer states a balance or suggests budget-based ideas.
+- Webhooks and X Activity API subscriptions are the only billed endpoints. Before creating or changing one, agents check `get_usage_credits`, give the balance and per-event delivery prices, and wait for a yes. "Out of credits" applies only to those calls.
+- Rebuilt the X MCP guide from scratch at about half the length: one billing section, one missing-scopes section for Chat, calls, and livestreams, and a tighter X Chat flow. Removed the pricing reference, the starter-credits table, and the budget tiers.
+- Opening a message request pages its events and uses only those pages, so the preview is not decrypted twice.
+
 ## 2.8.1 — Broadcast chat history
 
 - The guide covers `get_broadcast_chat`: the chat history of an ended broadcast, newest first, up to 200 messages a page. Only the broadcast's owner can read it, and only after the broadcast ends.
