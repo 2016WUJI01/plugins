@@ -47,25 +47,6 @@ You will be asked to sign in to Intuit and pick a company. Authorization is per 
 
 The server is the source of truth for tool names and schemas.
 
-## Skills
-
-Bundled skills from Intuit's [QuickBooks plugin](https://github.com/intuit/quickbooks-claude-plugin) guide agents through multi-step workflows on top of the server's tools. Write actions (sending reminders or invoices, creating employees, changing pay) always ask for confirmation first.
-
-| Skill | What it does |
-| --- | --- |
-| `quickbooks-setup` | Connect QuickBooks in Cursor and troubleshoot the connection |
-| `business-health-check` | CFO-style briefing from profit and loss, cash flow, balance sheet, receivables aging, and sales |
-| `industry-benchmark` | Compare the connected company's figures against regional industry peers |
-| `chase-overdue-invoices` | Find overdue invoices and send reminders with tone matched to aging |
-| `email-to-estimate-invoice` | Turn a customer email thread into an estimate or invoice (needs an email MCP such as Gmail or Outlook) |
-| `payroll-help` | Read-only payroll lookups: employees, last run, payslips, pay types, deductions, time off |
-| `analyze-payroll-cost` | Explain payroll cost changes, top-paid employees, and cost drivers |
-| `payroll-employee-onboarding` | Add a new hire to QuickBooks Payroll with duplicate checks and read-back verification |
-| `set-base-pay` | View or change an employee's salary or hourly rate |
-| `lending` | QuickBooks Capital products, payment estimates, and the user's existing loans |
-
-Payroll and lending skills only work on companies with QuickBooks Payroll or QuickBooks Capital. Intuit's skills are licensed under Apache 2.0; see `skills/LICENSE`.
-
 ## Notes
 
 - Access follows whatever the signed-in Intuit user can see. The connector cannot reach a company file that user has no access to.
