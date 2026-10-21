@@ -2,6 +2,10 @@
 
 All notable changes to this plugin will be documented here.
 
+## 1.1.0
+
+- Added optional `CLIENT_ID` and `CLIENT_SECRET` team variables so a team admin can set one shared Google OAuth client for every member. Leaving them empty keeps signing in with Cursor's client. Requires Cursor 3.19.0 or later.
+
 ## 1.0.0 — initial release
 
 - Added the `google-cloud-bigquery` MCP server pointing at Google Cloud BigQuery's hosted Streamable HTTP endpoint (`https://bigquery.googleapis.com/mcp`).
