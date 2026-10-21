@@ -24,7 +24,7 @@ The plugin points at your workspace's Genie One endpoint:
       "url": "https://${DATABRICKS_HOST}/ai-gateway/mcp-services/system.ai.genie_one_mcp",
       "auth": {
         "CLIENT_ID": "${CLIENT_ID}",
-        "CLIENT_SECRET": "${CLIENT_SECRET}",
+        "CLIENT_SECRET": "${CLIENT_SECRET:-}",
         "scopes": ["ai-gateway", "offline_access"]
       }
     }
