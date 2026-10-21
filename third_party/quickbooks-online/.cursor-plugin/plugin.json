@@ -1,11 +1,11 @@
 {
   "name": "quickbooks-online",
   "displayName": "QuickBooks Online",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "minClientVersions": {
     "cursor": "3.19.0"
   },
-  "description": "Read invoices, bills, expenses, customers, accounts, and financial reports.",
+  "description": "Read invoices, bills, expenses, customers, accounts, and financial reports, with skills for health checks, invoicing, payroll, and lending.",
   "author": {
     "name": "Cursor",
     "email": "plugins@cursor.com"
@@ -24,6 +24,8 @@
     "invoices",
     "expenses",
     "finance",
+    "payroll",
+    "lending",
     "mcp"
   ],
   "category": "integrations",
@@ -33,5 +35,6 @@
     "finance",
     "mcp"
   ],
-  "mcpServers": "./mcp.json"
+  "mcpServers": "./mcp.json",
+  "skills": "./skills/"
 }
