@@ -521,7 +521,7 @@
     {
       "name": "quickbooks-online",
       "source": "third_party/quickbooks-online",
-      "description": "Read invoices, bills, expenses, customers, accounts, and financial reports."
+      "description": "Read invoices, bills, expenses, customers, accounts, and financial reports, with skills for health checks, invoicing, payroll, and lending."
     },
     {
       "name": "workday",
