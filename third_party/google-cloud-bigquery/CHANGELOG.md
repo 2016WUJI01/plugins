@@ -4,7 +4,7 @@ All notable changes to this plugin will be documented here.
 
 ## 1.1.0
 
-- Added optional `CLIENT_ID` and `CLIENT_SECRET` team variables so a team admin can set one shared Google OAuth client for every member. Leaving them empty keeps signing in with Cursor's client. Requires Cursor 3.19.0 or later.
+- Added required `CLIENT_ID` and `CLIENT_SECRET` team variables. A team admin sets one Google OAuth client that every member signs in under, and the plugin no longer uses Cursor's own client. Existing installs need these set before the next connect. Requires Cursor 3.19.0 or later.
 
 ## 1.0.0 — initial release
 

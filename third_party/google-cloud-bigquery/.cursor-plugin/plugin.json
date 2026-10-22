@@ -35,11 +35,15 @@
   "variables": {
     "type": "object",
     "additionalProperties": false,
+    "required": [
+      "CLIENT_ID",
+      "CLIENT_SECRET"
+    ],
     "properties": {
       "CLIENT_ID": {
         "type": "string",
         "title": "Client ID",
-        "description": "Optional. A Google OAuth client your team created, shared by every member. Leave empty to use Cursor's client."
+        "description": "A Google OAuth client your team created. Every team member signs in under it."
       },
       "CLIENT_SECRET": {
         "type": "string",

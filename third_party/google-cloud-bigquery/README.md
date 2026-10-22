@@ -21,24 +21,24 @@ Or run `/add-plugin google-cloud-bigquery` in chat.
       "type": "http",
       "url": "https://bigquery.googleapis.com/mcp",
       "auth": {
-        "CLIENT_ID": "${CLIENT_ID:-}",
-        "CLIENT_SECRET": "${CLIENT_SECRET:-}"
+        "CLIENT_ID": "${CLIENT_ID}",
+        "CLIENT_SECRET": "${CLIENT_SECRET}"
       }
     }
   }
 }
 ```
 
-Auth is OAuth. Cursor prompts for Google Cloud BigQuery sign-in when the plugin connects. By default it signs in with Cursor's Google OAuth client, so there is nothing to configure. A team can use its own client instead; see below.
+Auth is OAuth. Cursor prompts for Google Cloud BigQuery sign-in when the plugin connects. It signs in with a Google OAuth client your team provides; see below.
 
-## Use your team's own OAuth client
+## Set up your team's OAuth client
 
-A team admin can have every member sign in under one Google OAuth client the team owns, so consent and audit show the team's own app.
+A team admin provides one Google OAuth client, and every member signs in under it, so consent and audit show the team's own app. The Client ID and Client secret are required.
 
 1. In the Google Cloud console, create an OAuth client for a **Web application** and add Cursor's OAuth callback URL as an authorized redirect URI. Add the `https://www.googleapis.com/auth/bigquery` scope to the project's OAuth consent screen.
 2. In the Cursor dashboard, open the team's plugin settings for **Google Cloud BigQuery** and enter the **Client ID** and **Client secret**.
 
-Members then sign in to BigQuery under that client. The secret is stored encrypted and stays on Cursor's backend; it is never sent to members' machines. Leave both fields empty to use Cursor's client. Changing the client signs members out, and they reconnect once.
+Members then sign in to BigQuery under that client. The secret is stored encrypted and stays on Cursor's backend; it is never sent to members' machines. Changing the client signs members out, and they reconnect once.
 
 ## Before you connect
 
