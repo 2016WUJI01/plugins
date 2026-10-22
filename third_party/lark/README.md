@@ -14,7 +14,7 @@ Official MCP introduction: https://open.larksuite.com/document/uAjLw4CM/ukTMukTM
 
 Or run `/add-plugin lark` in chat.
 
-This plugin talks only to `mcp.larksuite.com`. China-region Feishu accounts use a different endpoint (`https://mcp.feishu.cn/mcp`) and are not supported by this plugin.
+Accounts on China-region Feishu should install the separate [Feishu](../feishu/) plugin instead. This plugin talks only to `mcp.larksuite.com`.
 
 ## MCP
 
@@ -50,6 +50,7 @@ Advertised tools include `fetch-file-v2`, `get-user`, `search-user`, `list-docs-
 - Tool calls run as the Lark user who authorizes the connection and cannot exceed that user's permissions.
 - This plugin points only at Lark's official hosted endpoint. It does not wrap the local `@larksuiteoapi/lark-mcp` stdio server, and it does not take an app id, app secret, user access token, or `X-Lark-MCP-*` header.
 - Lark hosts the server itself. OAuth metadata is discovered at connect time (protected resource `https://mcp.larksuite.com/.well-known/oauth-protected-resource/mcp`, authorization server `https://accounts.larksuite.com/mcp`, dynamic client registration `https://open.larksuite.com/open-apis/app/v1/dcr`).
+- China-region Feishu is a separate plugin (`feishu`) pointing at `https://mcp.feishu.cn/mcp`.
 - Revoke access at any time from your Lark account.
 
 ## Docs

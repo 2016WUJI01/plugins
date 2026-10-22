@@ -607,6 +607,11 @@
       "name": "lark",
       "source": "third_party/lark",
       "description": "Search, create, and update Lark Suite docs, and read Lark messages and groups."
+    },
+    {
+      "name": "feishu",
+      "source": "third_party/feishu",
+      "description": "Search, create, and update Feishu docs, and read Feishu messages and groups."
     }
   ]
 }
