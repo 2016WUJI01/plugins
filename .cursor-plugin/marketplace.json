@@ -612,6 +612,11 @@
       "name": "feishu",
       "source": "third_party/feishu",
       "description": "Search, create, and update Feishu docs, and read Feishu messages and groups."
+    },
+    {
+      "name": "framer",
+      "source": "third_party/framer",
+      "description": "Design, build, and edit your Framer sites, pages, and CMS content."
     }
   ]
 }
