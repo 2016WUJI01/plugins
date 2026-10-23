@@ -444,6 +444,11 @@
       "description": "Pull source-linked fundamentals, KPIs, filings, and prices."
     },
     {
+      "name": "pitchbook",
+      "source": "third_party/pitchbook",
+      "description": "Research private companies, deals, investors, and funds."
+    },
+    {
       "name": "excalidraw",
       "source": "third_party/excalidraw",
       "description": "Draw and export hand-drawn diagrams from chat."
