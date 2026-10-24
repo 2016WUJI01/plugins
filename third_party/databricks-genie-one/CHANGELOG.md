@@ -2,10 +2,6 @@
 
 All notable changes to this plugin will be documented here.
 
-## 1.0.2 — setup form copy
-
-- Plugin variables: `DATABRICKS_HOST` is now titled "Workspace URL" and accepts a workspace URL or Genie MCP URL (only the hostname is kept). Added placeholder examples for `DATABRICKS_HOST`, `CLIENT_ID`, and `CLIENT_SECRET`. Variable keys, types, and required fields are unchanged; `CLIENT_SECRET` stays optional for public clients.
-
 ## 1.0.1 — Genie icon
 
 - Logo: replaced the Databricks mark with Databricks' official Genie icon from https://www.databricks.com/sites/default/files/2026-05/icon-genie.svg, rendered at 192×192 on a transparent background. No server or client-version changes.
